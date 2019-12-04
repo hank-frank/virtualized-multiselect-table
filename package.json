@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server",
-    "build": "NODE_ENV=production parcel build src/index.html"
+    "build": "NODE_ENV=production parcel build src/index.html",
+    "watch": "NODE_ENV=development parcel watch src/index.html"
   },
   "repository": {
     "type": "git",
