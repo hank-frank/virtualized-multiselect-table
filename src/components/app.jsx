@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 
 function App () {
     return (
-        <h1>Testing this hot dirty mother!</h1>
+        <h1>Testing this hot dirty mother F'r!</h1>
     )
 };
 

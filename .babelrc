@@ -20,8 +20,7 @@
             "regenerator": true,
             "useESModules": false
         }
-        ],
-        ["@babel/plugin-proposal-optional-chaining"]
+        ]
     ]
 }
 
