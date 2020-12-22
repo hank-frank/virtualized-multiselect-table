@@ -41,6 +41,7 @@ const MyTable = (props) => {
     };
 
     useEffect(() => {
+        //this table generation is in this useEffect to trigger a re-render of it with the updated row styling to visually indicate selection, if not in a useEffect it will not re-render, the above function to apply the styles conditionally is not enough on it's own
         setMyTable(<Table 
             width={ 600 }
             height={ 500 }
@@ -80,7 +81,6 @@ const MyTable = (props) => {
     }
 
     const filterSelectedForUnique = (array) => {
-
         // This uses an object property to check for duplicates, if 'name' is not a unique object property a different unique object prop will need to be used
         //This filtering for unique is here to prevent duplicate additions to the arrays with multiple shift range selections in a row. 
         let flags = {};
