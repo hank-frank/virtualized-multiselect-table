@@ -69,6 +69,22 @@ const MyTable = (props) => {
         console.log(`selected: `, selected);
     };
 
+    const filterIndexesForUnique = (array) => {
+        return [...new Set(array)];
+    }
+
+    const filterSelectedForUnique = (array) => {
+        let flags = {};
+        let final = array.filter((each) => {
+            if (flags[each.name]) {
+                return false;
+            }
+            flags[each.name] = true;
+            return true;
+        })
+        return final;
+    };
+
     const rowClickEvent = (event) => {
         console.log(event);
         const indexClicked = event.index;
@@ -79,65 +95,63 @@ const MyTable = (props) => {
         setLastClicked(indexClicked);
 
         if (shift) {
-            if (tempIndexes.includes(indexClicked)) {
-                console.log('SHIFT already included');
-            } else {
-                if (indexClicked > lastClicked) {
-                    for (let i = lastClicked; i <= indexClicked; i ++) {
-                        tempIndexes.push(i);
-                        tempSelected.push(list[i]);
-                    }
-                    setIndexes(tempIndexes);
-                    tempSelected = [...new Set(tempSelected)];                        
-                    setSelected(tempSelected);
-                } else if (indexClicked < lastClicked) {
-                    for (let i = indexClicked; i <= lastClicked; i ++) {
-                        tempIndexes.push(i);
-                        tempSelected.push(list[i]);
-                    }
-                    setIndexes(tempIndexes);
-                    tempSelected = [...new Set(tempSelected)];                        
-                    setSelected(tempSelected);
+            //need to check if clicked and last clicked are both inside of a selected range and add ot conditional for range deselsect
+            if (tempIndexes.includes(indexClicked) && tempIndexes.includes(lastClicked) && indexClicked > lastClicked) {
+                tempIndexes.splice(lastClicked, Math.abs(indexClicked - lastClicked) + 1);
+                tempSelected.splice(lastClicked, Math.abs(indexClicked - lastClicked) + 1);
+                setIndexes(filterIndexesForUnique(tempIndexes));
+                setSelected(filterSelectedForUnique(tempSelected));
+            } else if (indexClicked > lastClicked) {
+                for (let i = lastClicked; i <= indexClicked; i ++) {
+                    tempIndexes.push(i);
+                    tempSelected.push(list[i]);
                 }
-                
-            }
+                setIndexes(filterIndexesForUnique(tempIndexes));
+                setSelected(filterSelectedForUnique(tempSelected));
+            } else if (indexClicked < lastClicked) {
+                for (let i = indexClicked; i <= lastClicked; i ++) {
+                    tempIndexes.push(i);
+                    tempSelected.push(list[i]);
+                }
+                setIndexes(filterIndexesForUnique(tempIndexes));
+                setSelected(filterSelectedForUnique(tempSelected));
+            }        
         } else if (cmnd) {
             if (tempIndexes.includes(indexClicked)) {
-                console.log('already included');
-                for (let i = 0; i < tempIndexes.length; i++) {
-                    if (tempIndexes[i] === indexClicked) {
+                for (let i = 0; i < tempIndexes.length; i ++) {
+                    if (indexClicked === tempIndexes[i]) {
                         tempIndexes.splice(i, 1);
                         tempSelected.splice(i, 1);
                     }
-                }
-                setIndexes(tempIndexes);                
-                tempSelected = [...new Set(tempSelected)];                        
-                setSelected(tempSelected);
+                }   
+                setIndexes(filterIndexesForUnique(tempIndexes));                        
+                setSelected(filterSelectedForUnique(tempSelected));
             } else {
                 tempIndexes.push(indexClicked);
                 tempSelected.push(list[indexClicked]);
-                setIndexes(tempIndexes);
-                tempSelected = [...new Set(tempSelected)];                        
-                setSelected(tempSelected);
+                setIndexes(filterIndexesForUnique(tempIndexes));                       
+                setSelected(filterSelectedForUnique(tempSelected));
             }
         } else { 
             if (tempIndexes.includes(indexClicked)) {
-                console.log('already included');
-                for (let i = 0; i < tempIndexes.length; i++) {
-                    if (tempIndexes[i] === indexClicked) {
-                        tempIndexes.splice(i, 1);
-                        tempSelected.splice(i, 1);
-                    }
+                if (tempIndexes.length > 1) {
+                    tempIndexes = [];
+                    tempSelected = [];
+                    tempIndexes.push(indexClicked);
+                    tempSelected.push(list[indexClicked]);
+                    setIndexes(filterIndexesForUnique(tempIndexes));                       
+                    setSelected(filterSelectedForUnique(tempSelected));
+                } else {
+                    setIndexes([]);                       
+                    setSelected([]);
                 }
-                setIndexes(tempIndexes);
-                tempSelected = [...new Set(tempSelected)];                        
-                setSelected(tempSelected);
             } else {
+                tempIndexes = [];
+                tempSelected = [];
                 tempIndexes.push(indexClicked);
                 tempSelected.push(list[indexClicked]);
-                setIndexes(tempIndexes);
-                tempSelected = [...new Set(tempSelected)];                        
-                setSelected(tempSelected);
+                setIndexes(filterIndexesForUnique(tempIndexes));                       
+                setSelected(filterSelectedForUnique(tempSelected));
             }
         }
     };

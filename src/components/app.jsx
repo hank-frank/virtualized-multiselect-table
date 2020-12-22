@@ -8,8 +8,8 @@ import MyTable from './table.jsx';
 function App () {
     return (
         <>
-        <h1>Testing this hot dirty mother!</h1>
-        <MyTable />
+            <h1>Headline</h1>
+            <MyTable />
         </>
     )
 };
