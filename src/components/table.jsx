@@ -80,7 +80,9 @@ const MyTable = (props) => {
     }
 
     const filterSelectedForUnique = (array) => {
+
         // This uses an object property to check for duplicates, if 'name' is not a unique object property a different unique object prop will need to be used
+        //This filtering for unique is here to prevent duplicate additions to the arrays with multiple shift range selections in a row. 
         let flags = {};
         let final = array.filter((each) => {
             if (flags[each.name]) {
